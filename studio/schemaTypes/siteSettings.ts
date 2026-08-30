@@ -81,7 +81,7 @@ export default defineType({
       type: "array",
       of: [{ type: "string" }],
       group: "credits",
-      options: { layout: "tags" },
+      description: "Drag to reorder. This is the order shown in the About panel.",
     }),
     defineField({
       name: "talent",
@@ -89,7 +89,7 @@ export default defineType({
       type: "array",
       of: [{ type: "string" }],
       group: "credits",
-      options: { layout: "tags" },
+      description: "Drag to reorder. This is the order shown in the About panel.",
     }),
   ],
   preview: {
