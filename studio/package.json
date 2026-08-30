@@ -1,0 +1,25 @@
+{
+  "name": "lewis-stratton-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "sanity dev",
+    "build": "sanity build",
+    "deploy": "sanity deploy"
+  },
+  "dependencies": {
+    "@sanity/orderable-document-list": "^2.0.23",
+    "@sanity/ui": "^4.0.7",
+    "@sanity/vision": "^6.11.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "sanity": "^6.11.0",
+    "sanity-plugin-media": "^6.1.7",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "typescript": "^5.7.3"
+  }
+}

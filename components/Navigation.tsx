@@ -7,20 +7,8 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { markIntroPlayed } from "@/lib/intro";
 import { EASE, EASE_IN } from "@/lib/motion";
-import { ARTICLES, Article } from "@/data/articles";
+import type { Article, SiteSettings } from "@/lib/sanity/types";
 import ArticleOverlay from "./ArticleOverlay";
-
-const INSTAGRAM_HANDLE = "@lewisstratton_";
-const INSTAGRAM_URL = "https://www.instagram.com/lewisstratton_/";
-const EMAIL = "studio@lewisstratton.com";
-
-const PUBLICATIONS = [
-    "DSCENE", "Fucking Young!", "Hunger Magazine", "Male Model Scene",
-];
-
-const TALENT = [
-    "Bethany Antonia", "Eliza", "Yonaka",
-];
 
 const mobileMenuContainer = {
     hidden: { opacity: 0, transition: { duration: 0.3, ease: EASE } },
@@ -61,7 +49,13 @@ function CreditList({ label, entries }: { label: string; entries: string[] }) {
     );
 }
 
-export default function Navigation() {
+export default function Navigation({
+    settings,
+    articles,
+}: {
+    settings: SiteSettings;
+    articles: Article[];
+}) {
     const [isLoading, setIsLoading] = useState(true);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isAboutOpen, setIsAboutOpen] = useState(false);
@@ -143,7 +137,7 @@ export default function Navigation() {
                     >
                         <div ref={preloaderContentRef} className="absolute inset-0">
                             <div className="font-medium absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
-                                Stylist &amp; Fashion Editor
+                                {settings.role}
                             </div>
                             <span
                                 ref={countDesktopRef}
@@ -188,10 +182,10 @@ export default function Navigation() {
                                 transition={{ duration: 0.4, ease: EASE }}
                                 className="pointer-events-auto relative"
                             >
-                                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className={`${navItemClass} font-bold`}>{INSTAGRAM_HANDLE}</a>
+                                <a href={settings.instagramUrl ?? "#"} target="_blank" rel="noopener noreferrer" className={`${navItemClass} font-bold`}>{settings.instagramHandle}</a>
                                 <div className="absolute top-full mt-6 flex flex-col gap-1">
-                                    <span>Stylist and fashion editor based in London</span>
-                                    <a href={`mailto:${EMAIL}`} className={navItemClass}>{EMAIL}</a>
+                                    <span>{settings.shortTagline}</span>
+                                    <a href={`mailto:${settings.email}`} className={navItemClass}>{settings.email}</a>
                                 </div>
                             </motion.div>
                         ) : (
@@ -204,7 +198,7 @@ export default function Navigation() {
                                 className="pointer-events-auto flex gap-12 items-center"
                             >
                                 <div className="font-bold whitespace-nowrap">
-                                    <TransitionLink href="/" className={navItemClass}>Lewis Stratton</TransitionLink>
+                                    <TransitionLink href="/" className={navItemClass}>{settings.name}</TransitionLink>
                                 </div>
 
                                 <AnimatePresence>
@@ -248,7 +242,7 @@ export default function Navigation() {
                                 transition={{ duration: 0.4, ease: EASE }}
                                 className="pointer-events-auto relative flex flex-col gap-1"
                             >
-                                <span className="font-bold">London</span>
+                                <span className="font-bold">{settings.location}</span>
                             </motion.div>
                         ) : !isLoading && !isAboutOpen && !isContactOpen ? (
                             <motion.div
@@ -277,7 +271,7 @@ export default function Navigation() {
                                                     transition={{ duration: 0.4, ease: EASE }}
                                                     className="absolute right-full top-0 mr-12 flex flex-col items-end gap-3 text-right whitespace-nowrap"
                                                 >
-                                                    {ARTICLES.map((article) => (
+                                                    {articles.map((article) => (
                                                         <button
                                                             key={article.slug}
                                                             onClick={() => openArticle(article)}
@@ -310,7 +304,7 @@ export default function Navigation() {
                         className="flex lg:hidden fixed top-0 left-0 right-0 px-6 pt-[max(1.5rem,env(safe-area-inset-top))] pb-6 justify-between items-start font-mono text-[10px] tracking-tighter w-full pointer-events-auto z-50 text-foreground"
                     >
                         <div className="font-bold whitespace-nowrap z-50 flex flex-col items-start flex-1 min-w-0">
-                            <TransitionLink href="/" onClick={() => setIsMobileMenuOpen(false)}>Lewis Stratton</TransitionLink>
+                            <TransitionLink href="/" onClick={() => setIsMobileMenuOpen(false)}>{settings.name}</TransitionLink>
 
                             <AnimatePresence>
                                 {isMobileMenuOpen && (
@@ -357,7 +351,7 @@ export default function Navigation() {
                                                                 transition={{ duration: 0.4, ease: EASE }}
                                                                 className="flex flex-col items-start pb-2"
                                                             >
-                                                                {ARTICLES.map((article) => (
+                                                                {articles.map((article) => (
                                                                     <button
                                                                         key={article.slug}
                                                                         onClick={() => openArticle(article)}
@@ -439,14 +433,14 @@ export default function Navigation() {
                         >
                             <div className="w-full max-w-md mx-auto">
                                 <div className="font-mono text-xs leading-relaxed tracking-tight text-foreground/80 flex flex-col gap-8">
-                                    <p>Stylist and fashion editor based in London, contributing to a number of publications.</p>
+                                    <p>{settings.tagline}</p>
 
                                     <div className="flex flex-col gap-1 tracking-tighter text-[10px]">
-                                        <a href={`mailto:${EMAIL}`} className={navItemClass}>
-                                            <span className="opacity-40">Mail</span> {EMAIL}
+                                        <a href={`mailto:${settings.email}`} className={navItemClass}>
+                                            <span className="opacity-40">Mail</span> {settings.email}
                                         </a>
-                                        <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className={navItemClass}>
-                                            <span className="opacity-40">Instagram</span> {INSTAGRAM_HANDLE}
+                                        <a href={settings.instagramUrl ?? "#"} target="_blank" rel="noopener noreferrer" className={navItemClass}>
+                                            <span className="opacity-40">Instagram</span> {settings.instagramHandle}
                                         </a>
                                     </div>
                                 </div>
@@ -459,7 +453,7 @@ export default function Navigation() {
                             exit={{ opacity: 0, transition: { duration: 0.3, ease: EASE } }}
                             className={panelHeaderClass}
                         >
-                            <span className="font-bold whitespace-nowrap">Lewis Stratton</span>
+                            <span className="font-bold whitespace-nowrap">{settings.name}</span>
                             <button
                                 onClick={() => setIsContactOpen(false)}
                                 className="font-bold hover:opacity-50 transition-opacity duration-300"
@@ -491,19 +485,19 @@ export default function Navigation() {
                         >
                             <div className="w-full max-w-md mx-auto">
                                 <div className="font-mono text-xs leading-relaxed tracking-tight text-foreground/80 flex flex-col gap-8">
-                                    <p>Stylist and fashion editor based in London, contributing to a number of publications.</p>
+                                    <p>{settings.tagline}</p>
 
                                     <div className="flex flex-col gap-1 tracking-tighter text-[10px]">
-                                        <a href={`mailto:${EMAIL}`} className={navItemClass}>
-                                            <span className="opacity-40">Mail</span> {EMAIL}
+                                        <a href={`mailto:${settings.email}`} className={navItemClass}>
+                                            <span className="opacity-40">Mail</span> {settings.email}
                                         </a>
-                                        <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className={navItemClass}>
-                                            <span className="opacity-40">Instagram</span> {INSTAGRAM_HANDLE}
+                                        <a href={settings.instagramUrl ?? "#"} target="_blank" rel="noopener noreferrer" className={navItemClass}>
+                                            <span className="opacity-40">Instagram</span> {settings.instagramHandle}
                                         </a>
                                     </div>
 
-                                    <CreditList label="Selected Publications" entries={PUBLICATIONS} />
-                                    <CreditList label="Selected Talent" entries={TALENT} />
+                                    <CreditList label="Selected Publications" entries={settings.publications} />
+                                    <CreditList label="Selected Talent" entries={settings.talent} />
                                 </div>
                             </div>
                         </motion.div>
@@ -514,7 +508,7 @@ export default function Navigation() {
                             exit={{ opacity: 0, transition: { duration: 0.3, ease: EASE } }}
                             className={panelHeaderClass}
                         >
-                            <span className="font-bold whitespace-nowrap">Lewis Stratton</span>
+                            <span className="font-bold whitespace-nowrap">{settings.name}</span>
                             <button
                                 onClick={() => setIsAboutOpen(false)}
                                 className="font-bold hover:opacity-50 transition-opacity duration-300"

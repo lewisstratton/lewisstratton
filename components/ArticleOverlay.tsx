@@ -1,8 +1,44 @@
 "use client";
 
-import Image from "next/image";
+import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import Overlay from "./Overlay";
-import { Article } from "@/data/articles";
+import SanityImage from "./SanityImage";
+import type { Article, ArticleImageBlock } from "@/lib/sanity/types";
+
+const components: PortableTextComponents = {
+  block: {
+    normal: ({ children }) => <p>{children}</p>,
+    blockquote: ({ children }) => <p className="text-foreground py-2">{children}</p>,
+  },
+  marks: {
+    link: ({ children, value }) => (
+      <a
+        href={value?.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 hover:opacity-50 transition-opacity duration-300"
+      >
+        {children}
+      </a>
+    ),
+  },
+  types: {
+    articleImage: ({ value }: { value: ArticleImageBlock }) => (
+      <figure className="flex flex-col gap-2 -mx-6 lg:mx-0">
+        <SanityImage
+          image={value.image}
+          alt={value.credit ?? ""}
+          sizes="(max-width: 1024px) 100vw, 40vw"
+        />
+        {value.credit && (
+          <figcaption className="px-6 lg:px-0 opacity-40 tracking-tighter text-[10px]">
+            {value.credit}
+          </figcaption>
+        )}
+      </figure>
+    ),
+  },
+};
 
 export default function ArticleOverlay({
   article,
@@ -20,39 +56,26 @@ export default function ArticleOverlay({
     >
       <div className="px-6 lg:px-0 pb-24 lg:pb-32">
         <div className="w-full max-w-lg mx-auto flex flex-col gap-8 font-mono text-xs leading-relaxed tracking-tight text-foreground/80">
-          <div className="flex flex-col gap-2">
-            <span className="font-bold tracking-tighter text-foreground">
-              {article?.standfirst}
-            </span>
-            <span className="opacity-40 tracking-tighter text-[10px]">{article?.date}</span>
-          </div>
+          {article && (
+            <>
+              <div className="flex flex-col gap-2">
+                {article.standfirst && (
+                  <span className="font-bold tracking-tighter text-foreground">
+                    {article.standfirst}
+                  </span>
+                )}
+                <span className="opacity-40 tracking-tighter text-[10px]">
+                  {article.formattedDate}
+                </span>
+              </div>
 
-          {article?.body.map((block, index) =>
-            block.type === "image" ? (
-              <figure key={block.src} className="flex flex-col gap-2 -mx-6 lg:mx-0">
-                <Image
-                  src={block.src}
-                  alt={block.credit}
-                  width={0}
-                  height={0}
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="w-full h-auto"
-                  priority={index === 0}
-                />
-                <figcaption className="px-6 lg:px-0 opacity-40 tracking-tighter text-[10px]">
-                  {block.credit}
-                </figcaption>
-              </figure>
-            ) : block.type === "quote" ? (
-              <p key={index} className="text-foreground py-2">
-                {block.text}
-              </p>
-            ) : (
-              <p key={index}>{block.text}</p>
-            )
+              <PortableText value={article.body} components={components} />
+
+              {article.byline && (
+                <p className="opacity-40 tracking-tighter text-[10px]">{article.byline}</p>
+              )}
+            </>
           )}
-
-          <p className="opacity-40 tracking-tighter text-[10px]">{article?.byline}</p>
         </div>
       </div>
     </Overlay>

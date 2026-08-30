@@ -4,6 +4,8 @@ import SmoothScroll from "@/components/SmoothScroll";
 import PageTransition from "@/components/PageTransition";
 import FilmGrain from "@/components/FilmGrain";
 import Navigation from "@/components/Navigation";
+import { getArticles, getSiteSettings } from "@/lib/sanity/queries";
+import { FALLBACK_SETTINGS } from "@/lib/sanity/fallback";
 import "./globals.css";
 
 const spaceMono = Space_Mono({
@@ -12,10 +14,14 @@ const spaceMono = Space_Mono({
   weight: ["400", "700"],
 });
 
-export const metadata: Metadata = {
-  title: "Lewis Stratton",
-  description: "London based stylist and fashion editor, contributing to a number of publications.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = (await getSiteSettings()) ?? FALLBACK_SETTINGS;
+
+  return {
+    title: settings.name,
+    description: settings.metaDescription ?? settings.tagline ?? undefined,
+  };
+}
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -23,16 +29,18 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [settings, articles] = await Promise.all([getSiteSettings(), getArticles()]);
+
   return (
     <html lang="en">
       <body className={`${spaceMono.variable} antialiased bg-background text-foreground overflow-x-hidden`}>
         <PageTransition>
-          <Navigation />
+          <Navigation settings={settings ?? FALLBACK_SETTINGS} articles={articles} />
           <SmoothScroll>{children}</SmoothScroll>
           <FilmGrain />
         </PageTransition>

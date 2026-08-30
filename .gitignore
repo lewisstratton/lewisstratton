@@ -23,6 +23,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 .env*
+!.env.example
 
 .vercel
 
@@ -30,3 +31,7 @@ yarn-error.log*
 
 *.tsbuildinfo
 next-env.d.ts
+
+studio/node_modules
+studio/dist
+studio/.sanity
