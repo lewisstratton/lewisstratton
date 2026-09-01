@@ -34,7 +34,7 @@ function OverlayPanel({
 
   return (
     <>
-      <div className="sticky top-0 z-10 flex justify-between items-baseline gap-6 px-6 lg:px-12 pt-[max(1.5rem,env(safe-area-inset-top))] lg:pt-10 pb-6 font-mono text-[10px] lg:text-xs tracking-tighter text-foreground">
+      <div className="shrink-0 flex justify-between items-baseline gap-6 px-6 lg:px-12 pt-[max(1.5rem,env(safe-area-inset-top))] lg:pt-10 pb-6 font-mono text-[10px] lg:text-xs tracking-tighter text-foreground">
         <span className="flex flex-col gap-1.5">
           <span className="font-bold">{title}</span>
           <span className="opacity-40 italic">{meta}</span>
@@ -48,7 +48,7 @@ function OverlayPanel({
         </button>
       </div>
 
-      {children}
+      <div className="flex-1 min-h-0">{children}</div>
     </>
   );
 }
@@ -74,8 +74,7 @@ export default function Overlay({
           animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
           exit={{ clipPath: "inset(100% 0% 0% 0%)" }}
           transition={{ duration: 0.7, ease: EASE }}
-          className="fixed inset-0 z-[60] bg-surface overflow-y-auto overscroll-contain"
-          data-lenis-prevent
+          className="fixed inset-0 z-[60] bg-background flex flex-col"
         >
           <OverlayPanel title={title} meta={meta} onClose={onClose}>
             {children}

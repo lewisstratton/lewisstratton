@@ -54,7 +54,10 @@ export default function ArticleOverlay({
       meta={article ? `${article.publication} (${article.year})` : ""}
       onClose={onClose}
     >
-      <div className="px-6 lg:px-0 pb-24 lg:pb-32">
+      <div
+        className="h-full overflow-y-auto overscroll-contain px-6 lg:px-0 pb-24 lg:pb-32"
+        data-lenis-prevent
+      >
         <div className="w-full max-w-lg mx-auto flex flex-col gap-8 font-mono text-xs leading-relaxed tracking-tight text-foreground/80">
           {article && (
             <>

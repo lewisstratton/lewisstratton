@@ -3,13 +3,11 @@
 :root {
     --background: #F5F5F0;
     --foreground: #1A1A1A;
-    --surface: #DEDAD0;
 }
 
 @theme inline {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
-    --color-surface: var(--surface);
     --font-mono: var(--font-space-mono);
 }
 
@@ -17,7 +15,6 @@
     :root {
         --background: #F5F5F0;
         --foreground: #1A1A1A;
-        --surface: #DEDAD0;
     }
 }
 

@@ -7,13 +7,13 @@ import ProjectOverlay from "@/components/ProjectOverlay";
 import { ENTRANCE, ENTRANCE_DELAY } from "@/lib/motion";
 import type { Project } from "@/lib/sanity/types";
 
-export default function ListView({ projects }: { projects: Project[] }) {
+export default function CreditsView({ projects }: { projects: Project[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
 
   useGSAP(
     () => {
-      gsap.from(".list-row", { ...ENTRANCE, delay: ENTRANCE_DELAY });
+      gsap.from(".credit-row", { ...ENTRANCE, delay: ENTRANCE_DELAY });
     },
     { scope: containerRef, dependencies: [projects.length] }
   );
@@ -29,7 +29,7 @@ export default function ListView({ projects }: { projects: Project[] }) {
         <div className="lg:col-span-2 flex flex-col items-center pt-24 pb-32 lg:pt-[calc(50vh-0.375rem)] lg:pb-[calc(50vh-6px)] z-10">
           <ul className="w-full max-w-md flex flex-col gap-7 font-mono text-[10px] lg:text-xs tracking-tighter leading-none text-foreground">
             {projects.map((project) => (
-              <li key={project.slug} data-melt className="list-row">
+              <li key={project.slug} data-melt className="credit-row">
                 <button
                   onClick={() => setActiveProject(project)}
                   className="group w-full flex justify-between gap-6 items-baseline text-left cursor-pointer"

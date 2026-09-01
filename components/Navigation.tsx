@@ -111,7 +111,7 @@ export default function Navigation({
         onSelect?: () => void;
         expandsArticles?: boolean;
     }[] = [
-            { label: "List", href: "/list" },
+            { label: "Credits", href: "/credits" },
             { label: "Articles", expandsArticles: true },
             { label: "About", onSelect: () => setIsAboutOpen(true) },
             { label: "Contact", onSelect: () => setIsContactOpen(true) },
@@ -219,7 +219,7 @@ export default function Navigation({
                                                     {isAboutOpen ? (
                                                         <button onClick={() => setIsAboutOpen(false)} className={navItemClass}>Close</button>
                                                     ) : (
-                                                        <TransitionLink href="/list" className={navItemClass}>List</TransitionLink>
+                                                        <TransitionLink href="/credits" className={navItemClass}>Credits</TransitionLink>
                                                     )}
                                                 </motion.div>
                                             </AnimatePresence>
